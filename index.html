@@ -1,14 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="./scrip.js"></script>
-    <script src="./js/XMLHttpRequest RESTful GET.js"></script>
-    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        const urlBacon = "https://jsonplaceholder.typicode.com/todos/1";
+        (function () {
+            $.ajax({ method: "GET", url: urlBacon, dataType: "json" })
+                .done(function (data) {
+                    const table = `
+                        <table border="1">
+                            <tr>
+                                <th>User ID</th>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Completed</th>
+                                <th colspan="2">Actions</th>
+                            </tr>
+                            <tr>
+                                <td>${data.userId}</td>
+                                <td>${data.id}</td>
+                                <td>${data.title}</td>
+                                <td>${data.completed}</td>
+                                <td>
+                                    <button onclick="editRow()">Edit</button>
+                                </td>
+                                <td>
+                                    <button onclick="deleteRow()">Delete</button>
+                                </td>
+                            </tr>
+                        </table>
+                    `;
+                    $('body').append(table);
+
+                    window.editRow = function () {
+                        alert('Đây là nút chỉnh sủa');
+                    };
+
+                    window.deleteRow = function () {
+                        alert('Đây là nút xóa');
+                    };
+                    console.log(data);
+                })
+                .fail(function () {
+                    alert("no good");
+                });
+        })();
+    </script>
 </body>
+
 </html>
