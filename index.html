@@ -9,51 +9,72 @@
 
 <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script>
-        const urlBacon = "https://jsonplaceholder.typicode.com/todos/1";
-        (function () {
-            $.ajax({ method: "GET", url: urlBacon, dataType: "json" })
-                .done(function (data) {
-                    const table = `
-                        <table border="1">
-                            <tr>
-                                <th>User ID</th>
-                                <th>ID</th>
-                                <th>Title</th>
-                                <th>Completed</th>
-                                <th colspan="2">Actions</th>
-                            </tr>
-                            <tr>
-                                <td>${data.userId}</td>
-                                <td>${data.id}</td>
-                                <td>${data.title}</td>
-                                <td>${data.completed}</td>
-                                <td>
-                                    <button onclick="editRow()">Edit</button>
-                                </td>
-                                <td>
-                                    <button onclick="deleteRow()">Delete</button>
-                                </td>
-                            </tr>
-                        </table>
-                    `;
-                    $('body').append(table);
+        const urlBacon = "https://jsonplaceholder.typicode.com/todos"; // API trả về danh sách
+(function () {
+    $.ajax({ method: "GET", url: urlBacon, dataType: "json" })
+        .done(function (data) {
+            const table = `
+                <table id="todoTable" border="1">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Completed</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            `;
+            $('body').append(table);
 
-                    window.editRow = function () {
-                        alert('Đây là nút chỉnh sủa');
-                    };
+            // Duyệt qua dữ liệu và thêm vào bảng
+            data.forEach(todo => {
+                addRow(todo);
+            });
 
-                    window.deleteRow = function () {
-                        alert('Đây là nút xóa');
-                    };
-                    console.log(data);
-                })
-                .fail(function () {
-                    alert("no good");
-                });
-        })();
+            window.editRow = function (id) {
+                alert(`Chỉnh sửa TODO với ID: ${id}`);
+            };
+
+            window.deleteRow = function (id) {
+                alert(`Xóa TODO với ID: ${id}`);
+            };
+
+            console.log(data);
+        })
+        .fail(function () {
+            alert("no good");
+        });
+
+    // Hàm thêm hàng vào bảng
+    function addRow(todo) {
+        const row = `
+            <tr>
+                <td>${todo.userId}</td>
+                <td>${todo.id}</td>
+                <td>${todo.title}</td>
+                <td>${todo.completed}</td>
+                <td>
+                    <button onclick="editRow(${todo.id})">Edit</button>
+                </td>
+                <td>
+                    <button onclick="deleteRow(${todo.id})">Delete</button>
+                </td>
+            </tr>
+        `;
+        $('#todoTable tbody').append(row);
+    }
+})();
+
+            
     </script>
+
+
 </body>
 
 </html>
