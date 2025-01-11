@@ -2,13 +2,17 @@ const urlBacon = "https://jsonplaceholder.typicode.com/todos/1";
 (function(){
     $.ajax({
         url: "https://jsonplaceholder.typicode.com/todos/1",
-        datatype: "json",
+        beforeSend: function (xhr) {
+            xhr.overrideMimeType("text/plain; charset=x-user-defined");
+        }
 
     })
     .done(function(data){
         console.log(data);
     })
     .fail(function(){
-        alert("no good");
+        if (console && console.log) {
+        console.log("Sample of data:", data.slice(0, 100));
+        }            
     })
 })()
